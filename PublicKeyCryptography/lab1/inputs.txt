@@ -1,0 +1,9 @@
+
+Plain text:
+	second_example
+
+CypherText:
+	 BZWFQLPZGYMJSZ
+
+Encription key:
+	PYNWLZTXRVUOSMQFJDHBK_ICGAE
