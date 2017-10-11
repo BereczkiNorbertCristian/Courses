@@ -35,6 +35,14 @@ def computeEnKey(enKey):
 		ret[alf[i]] = enKey[i]
 	return ret	
 
+def validateText(itext):
+	
+	text = itext.upper()
+	n = len(text)
+	for i in range(0,n):
+		if (not (text[i]>="A" and text[i]<="Z")) and (not text[i]=="_"):
+			raise Exception("Invalid characters introduced!")
+
 def doEncrypt():
 	
 	print("Encrypting...")
@@ -48,6 +56,7 @@ def doEncrypt():
 	
 	try:
 		validateKey(enKey)
+		validateText(plainText)
 	except Exception as e:
 		tkinter.messagebox.showinfo("Invalid Key!",str(e))
 		return
@@ -77,8 +86,10 @@ def doDecrypt():
 	try:
 		validateKey(enKey)
 		validateCypherText(cypherText)
+		validateText(cypherText)
 	except Exception as e:
 		tkinter.messagebox.showinfo("Invalid Input!",str(e))
+		return
 	
 	computedKey = computeEnKey(enKey)
 	
