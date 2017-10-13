@@ -10,6 +10,7 @@ def getText(entry):
 	return entry.get("1.0",END).strip()
 
 def validateKey(key):
+	global ALPH_LEN
 
 	if not key == key.upper():
 		raise Exception("Key is not in upper characters!")
