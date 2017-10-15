@@ -1,0 +1,79 @@
+
+-compute the circumference (perimeter) and area of circle with a given radius
+
+circle c;
+float circumference;
+float area;
+
+scanIO(c.radius);
+circumference = 2 * PI * c.radius;
+area = PI * PI * c.radius; 
+putIO(circumference);
+putIO(area);
+
+-determine greatest common divisor of two natural numbers
+
+int a; 
+int b;
+int aux;
+
+scanIO(a);
+scanIO(b);
+doif( b!=0) :
+	aux = a%b;
+	a = b;
+	b = aux;
+dorepeat;
+putIO(a);
+
+-computes the sum of n real numbers 
+
+int n;
+int x;
+int sum;
+
+sum = 0;
+doif(n > 0) :
+	scanIO(x);
+	sum = sum + x;
+	n = n - 1;
+dorepeat;
+putIO(sum);
+
+
+EBNF
+
+program = var_declarations; statements;.
+
+var_declarations = var_declaration; [, var_declarations].
+var_declaration = type var_list;.
+type = predefined_type | user_defined_type.
+predefined_type = “int” | “float”.
+user_defined_type = “circle”.
+var_list = id [, var_list].
+id = {“a”|”b”|”c”|...|”z”|”A”|”B”|”C”|...|”Z”|}*.
+
+statements = statement;[statements].
+statement = assign_stmt | input_stmt | output_stmt | loop_stmt | 
+    conditional_stmt.
+
+assign_stmt = id “=” expr.
+expr = id | const | id operator expr.
+operator = “+” | “*” | “-” | “/” | “%”.
+const = non_zero { digit } | non_zero { digit } . { digit } non_zero 
+| “0”.
+non_zero = “1” | “2” | “3” | … “9”.
+digit = “0” | non_zero.
+
+
+input_stmt = “scanIO(“ id “)”.
+output_stmt = “putIO(“ id | expr “)”.
+
+loop_stmt = “doif” “(“ logical_expr “)” “:” statements “dorepeat;”.
+logical_expr = id logical_op id | id logical_op const | 
+    const logical_op id | const logical_op const | “true” | “false”.
+logical_op = “<” | “<=” | “>” | “>=” | “==” | “!=”.
+
+conditional_stmt = “doif” “(“ logical_expr “)” “:” statements 
+“done;”
+
