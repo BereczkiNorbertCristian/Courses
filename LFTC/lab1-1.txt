@@ -1,6 +1,10 @@
 
 -compute the circumference (perimeter) and area of circle with a given radius
 
+struct circle define;
+	float radius;
+done;
+
 circle c;
 float circumference;
 float area;
@@ -45,11 +49,13 @@ EBNF
 
 program = var_declarations; statements;.
 
+
+
 var_declarations = var_declaration; [, var_declarations].
 var_declaration = type var_list;.
 type = predefined_type | user_defined_type.
 predefined_type = “int” | “float”.
-user_defined_type = “circle”.
+user_defined_type = "struct" id "define"; [var_declaration] "done".
 var_list = id [, var_list].
 id = {“a”|”b”|”c”|...|”z”|”A”|”B”|”C”|...|”Z”|}*.
 
