@@ -8,7 +8,8 @@ public class Bill {
     private int amount;
     private int sum;
 
-    public Bill(){}
+    public Bill() {
+    }
 
     public int getProductIdx() {
         return productIdx;
@@ -34,17 +35,17 @@ public class Bill {
         this.amount = amount;
     }
 
-    public Bill withProductIdx(int productIdx){
+    public Bill withProductIdx(int productIdx) {
         this.productIdx = productIdx;
         return this;
     }
 
-    public Bill withSum(int sum){
+    public Bill withSum(int sum) {
         this.sum = sum;
         return this;
     }
 
-    public Bill withAmount(int amount){
+    public Bill withAmount(int amount) {
         this.amount = amount;
         return this;
     }
