@@ -47,11 +47,11 @@ putIO(sum);
 
 EBNF
 
-program = var_declarations; statements;.
+program = var_declarations statements;.
 
 
 
-var_declarations = var_declaration; [, var_declarations].
+var_declarations = var_declaration [ var_declarations].
 var_declaration = type var_list;.
 type = predefined_type | user_defined_type.
 predefined_type = “int” | “float”.
