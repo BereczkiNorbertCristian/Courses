@@ -23,11 +23,11 @@ int aux;
 
 scanIO(a);
 scanIO(b);
-doif( b!=0) :
+dorepeat( b!=0) :
 	aux = a%b;
 	a = b;
 	b = aux;
-dorepeat;
+done;
 putIO(a);
 
 -computes the sum of n real numbers 
@@ -37,11 +37,11 @@ int x;
 int sum;
 
 sum = 0;
-doif(n > 0) :
+dorepeat(n > 0) :
 	scanIO(x);
 	sum = sum + x;
 	n = n - 1;
-dorepeat;
+done;
 putIO(sum);
 
 
@@ -75,7 +75,7 @@ digit = “0” | non_zero.
 input_stmt = “scanIO(“ id “)”.
 output_stmt = “putIO(“ id | expr “)”.
 
-loop_stmt = “doif” “(“ logical_expr “)” “:” statements “dorepeat;”.
+loop_stmt = “dorepeat” “(“ logical_expr “)” “:” statements “done;”.
 logical_expr = id logical_op id | id logical_op const | 
     const logical_op id | const logical_op const | “true” | “false”.
 logical_op = “<” | “<=” | “>” | “>=” | “==” | “!=”.
