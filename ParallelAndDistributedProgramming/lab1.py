@@ -23,8 +23,8 @@ def initAll():
 	global b
 	global res
 
-	a=np.random.randint(10,size=(n,k))
-	b=np.random.randint(10,size=(k,m))
+	a=np.random.randint(20,size=(n,k))
+	b=np.random.randint(20,size=(k,m))
 
 	res=np.zeros((n,m))
 

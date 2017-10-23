@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,21 +16,21 @@ public class Main {
         );
     }
 
-    private static List<Bill> initBills() {
-        return Arrays.asList(
-                new Bill().withAmount(3).withProductIdx(0),
-                new Bill().withAmount(10).withProductIdx(1),
-                new Bill().withAmount(4).withProductIdx(0),
-                new Bill().withAmount(11).withProductIdx(3)
-        );
+    private static List<Bill> initBills(int ln) {
+        Random rn = new Random();
+        List<Bill> ret = new ArrayList<>();
+        for(int i=0;i<ln;++i){
+            ret.add(new Bill().withAmount(Math.abs(rn.nextInt()%3) + 1).withProductIdx(Math.abs(rn.nextInt()%4)));
+        }
+        return ret;
     }
 
     public static void main(String[] args) throws InterruptedException {
 
         List<Product> products = initProducts();
-        List<Bill> bills = initBills();
+        int billNo = 50;
+        List<Bill> bills = initBills(billNo);
 
-        int billNo = bills.size();
         int queries = 3;
 
         List<Thread> threads = new ArrayList<>(billNo + queries);
@@ -45,15 +46,21 @@ public class Main {
                     Thread.sleep((long) (Math.random() * 1000));
 
                     Product productRef = products.get(bill.getProductIdx());
-                    while (true) {
+
+                    while(true){
                         boolean productLocked = productRef.getProductLock().tryLock();
+                        if(productLocked) break;
+                        Thread.sleep(3000);
+                    }
+                    int gain = productRef.getAmount() * productRef.getPrice();
+                    productRef.setAmount(productRef.getAmount() - bill.getAmount());
+
+                    while (true) {
                         boolean soldItemsLocked = soldItemsLock.tryLock();
                         boolean totalGainLocked = totalGain.getTotalLock().tryLock();
-                        if (productLocked && soldItemsLocked && totalGainLocked) {
-                            int gain = productRef.getAmount() * productRef.getPrice();
+                        if (soldItemsLocked && totalGainLocked) {
                             soldItems.add(bill.withSum(gain));
 
-                            productRef.setAmount(productRef.getAmount() - bill.getAmount());
                             totalGain.add(gain);
 
                             productRef.getProductLock().unlock();
@@ -62,7 +69,6 @@ public class Main {
                             break;
                         }
 
-                        if (productLocked) productRef.getProductLock().unlock();
                         if (soldItemsLocked) soldItemsLock.unlock();
                         if (totalGainLocked) totalGain.getTotalLock().unlock();
 

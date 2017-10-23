@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * Class created for maintaining the codes mapped to each keyword or special symbol
+ * in the custom language
+ *
  * created by bnorbert on 19,10,2017
  * bnorbertcristian@gmail.com
  */
@@ -21,10 +24,20 @@ public class CodesMap {
 
     private Map<String, Integer> dictionary;
 
+    /**
+     * Upon construction the codes for each symbol are loaded from a resource file.
+     *
+     * @throws IOException
+     */
     public CodesMap() throws IOException {
         dictionary = loadData();
     }
 
+    /**
+     *
+     * @return mapping which represents the association between each special symbol and each code
+     * @throws IOException
+     */
     private Map<String, Integer> loadData() throws IOException {
 
         try (BufferedReader reader = new BufferedReader(

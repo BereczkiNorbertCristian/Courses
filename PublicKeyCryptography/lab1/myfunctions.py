@@ -1,4 +1,5 @@
 
+import string
 
 def encrypt(plainText,encryptionKey):
 
@@ -16,7 +17,16 @@ def getDecryptionKey(encryptionKey):
 	res = {}
 	for k in encryptionKey.keys():
 		res[encryptionKey[k]] = k
+	printDecr(res)
 	return res
+
+def printDecr(decrKey):
+
+	ans = ""
+	alph = "_" + string.ascii_uppercase
+	for i in range(0,27):
+		ans += decrKey[alph[i]]
+	print(ans)
 
 def decrypt(cypherText,encryptionKey):
 	
