@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-filename = sys.argv[1]
+filename = "algo3.out"
 
 hsSum = {}
 hsNo = {}
@@ -23,7 +23,7 @@ for a in arr:
 	res.append(hsSum[a]/hsNo[a])
 
 plt.scatter(arr,res)
-plt.title('GCD by euclid')
+plt.title('GCD by euclid of large numbers')
 plt.xlabel('Number of digits')
 plt.ylabel('Average time of gcd')
 plt.savefig("GCDeuclid.png")

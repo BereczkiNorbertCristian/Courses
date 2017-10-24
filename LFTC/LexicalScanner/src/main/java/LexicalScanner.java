@@ -86,6 +86,8 @@ public class LexicalScanner {
                     if (keywords.contains(word)) {
                         pif.add(Pair.of(codesMap.getCode(word), 0));
                     } else {
+                        if(word.length() > 250)
+                            throw new RuntimeException("This identifier is longer than 250 characters");
                         symbolTable.computeIfAbsent(word, k -> ++currentCodeTS);
                         pif.add(Pair.of(codesMap.getIdCode(), symbolTable.get(word)));
                     }
@@ -102,7 +104,7 @@ public class LexicalScanner {
 
                     pif.add(Pair.of(codesMap.getCode(element), 0));
                 } else {
-                    throw new RuntimeException(String.format("This charachter (at position %d) is not permitted!", i));
+                    throw new RuntimeException(String.format("This charachter (at position %d) %s is not permitted!", i, line.charAt(i)));
                 }
                 lineNumbers.add(lineNo);
                 begPositions.add(i);
