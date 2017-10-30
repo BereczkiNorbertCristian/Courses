@@ -29,6 +29,7 @@ int main(){
 	int n;
 	cin >> n;
 	string a,b;
+	cerr << n;
 	for(int i=0;i<n;i++){
 		cin >> a;
 		cin >> b;
@@ -39,8 +40,6 @@ int main(){
 		auto t2 = std::chrono::high_resolution_clock::now();
 		cout << a.length() << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
 	}
-
-
 
 	return 0;
 }

@@ -28,23 +28,44 @@ int countDigs(int x){
 	return res;
 }
 
+int simpleGcd(int a,int b){
+
+	int to = min(a,b);
+	int d = 1;
+	for(int i=1;i<to;++i){
+		if(a % i == 0 && b % i == 0){
+			d = i;
+		}
+	}
+	return d;
+}
+
+int extendedEuclid(int a,int b,int &x,int &y){
+
+	if(b == 0){
+		x = 1;
+		y = 0;
+		return a;
+	}
+	int x0,y0;
+	int d = extendedEuclid(b,a%b,x0,y0);
+	x = y0;
+	y = x0 - (a/b)*y0;
+	return d;
+}
 int n;
 
 int32_t main(){
 
-	#ifndef ONLINE_JUDGE
 	freopen("algo2.in","r",stdin);
 	freopen("algo2.out","w",stdout);
-	#endif
-
-	ios_base::sync_with_stdio(false);
 
 	cin >> n;
 	int a,b;
 	for(int i=0;i<n;i++){
 		cin >> a >> b ;
 		auto t1 = std::chrono::high_resolution_clock::now();
-		gcd(a,b);
+		simpleGcd(a,b);
 		auto t2 = std::chrono::high_resolution_clock::now();
 		cout << countDigs(a) << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
 	}

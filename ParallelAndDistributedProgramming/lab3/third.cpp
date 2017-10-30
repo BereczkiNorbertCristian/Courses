@@ -89,9 +89,12 @@ int32_t main(){
 		RES_ONE_THREAD[i].resize(k);
 	}
 
+	cout << n << ' ' << m << ' ' << k << '\n';
+
 	withOneThread();
 
 	cin >> workers;
+	cout << workers << '\n';
 
 	vector<shared_future<bool>> tasks;
 

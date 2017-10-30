@@ -1,0 +1,34 @@
+
+Async and future
+
+1.
+500 500 500 
+one thread -> 2152685310
+5 workers -> 2142205059
+
+2.
+500 500 500
+one thread -> 2153788178
+5 workers -> 2171480399
+
+3.
+100 100 100
+one thread -> 14910051
+5 workerds -> 18689751
+
+Threadpool
+1.
+500 500 500
+one thread -> 2134286972
+5 workers -> 1166736539
+
+2.
+500 500 500
+one thread -> 2141809657
+5 workerds -> 1174480346
+
+3.
+100 100 100
+one thread -> 14717043
+5 workers -> 8827785
+
