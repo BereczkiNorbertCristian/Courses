@@ -18,30 +18,43 @@ public class FiniteAutomata {
     private Set<String> finalStates ;
     private String  startState = null;
     private List<String> alphabet;
-    private Map<Pair<String,String>,List<String>> transitions;
+    private Map<Pair<String,String>,String> transitions;
 
     public FiniteAutomata() throws FileNotFoundException {
         loadAutomaton();
     }
 
-    public boolean testSequence(List<String> sequence){
+    /**
+     * Runs a helper function to test if the sequence is true or not
+     * @param sequence
+     * @return
+     */
+    public int testSequence(List<String> sequence){
         return dfsSearch(startState,0,sequence);
     }
 
-    private boolean dfsSearch(String state,int seqIdx,List<String> sequence){
+    /**
+     * This function moves from one node to another if the letter from the alphabet
+     * together with the current state form a transition if not the current position
+     * to which we arrived is returned to be used in showing what part of the sequence
+     * is valid.
+     * By returning the size of the list means that the introduced sequence is true.
+     *
+     * @param state
+     * @param seqIdx
+     * @param sequence
+     * @return
+     */
+    private int dfsSearch(String state,int seqIdx,List<String> sequence){
 
         if(sequence.size() == seqIdx && finalStates.contains(state))
-            return true;
+            return seqIdx;
         if(sequence.size() == seqIdx)
-            return false;
+            return seqIdx-1;
         Pair<String,String> pr = Pair.of(state,sequence.get(seqIdx));
         if (!transitions.containsKey(pr))
-            return false;
-        boolean foundOneValid = false;
-        for(String nextState : transitions.get(pr)){
-            foundOneValid |= dfsSearch(nextState,seqIdx+1,sequence);
-        }
-        return foundOneValid;
+            return seqIdx;
+        return dfsSearch(transitions.get(pr),seqIdx + 1,sequence);
     }
 
     @Override
@@ -62,11 +75,10 @@ public class FiniteAutomata {
         builder.append(alphabet.toString());
         builder.append("\nTransitions:\n");
         for(Pair<String,String> key : transitions.keySet()){
-            for(String nextState : transitions.get(key)){
-                builder.append(key.getLeft()).append(" ");
-                builder.append(key.getRight()).append(" ");
-                builder.append(nextState).append("\n");
-            }
+            String nextState = transitions.get(key);
+            builder.append(key.getLeft()).append(" ");
+            builder.append(key.getRight()).append(" ");
+            builder.append(nextState).append("\n");
         }
         return builder.toString();
     }
@@ -81,16 +93,15 @@ public class FiniteAutomata {
         transitions = readTransitions(scanner);
     }
 
-    private Map<Pair<String,String>,List<String>> readTransitions(Scanner scanner){
+    private Map<Pair<String,String>,String> readTransitions(Scanner scanner){
 
-        Map<Pair<String,String>,List<String>> ret = new HashMap<>();
+        Map<Pair<String,String>,String> ret = new HashMap<>();
         int noTransitions = scanner.nextInt();
         scanner.nextLine();
         for(int i=0;i<noTransitions;++i){
             String[] line = scanner.nextLine().split(" ");
             Pair<String,String> pr = Pair.of(line[0],line[1]);
-            ret.putIfAbsent(pr,new ArrayList<>());
-            ret.get(pr).add(line[2]);
+            ret.put(pr,line[2]);
         }
         return ret;
     }

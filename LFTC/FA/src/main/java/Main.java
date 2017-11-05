@@ -6,6 +6,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
+ * TODO: Find longest sequence
  * created by bnorbert on 31,10,2017
  * bnorbertcristian@gmail.com
  */
@@ -32,7 +33,10 @@ public class Main {
                     System.out.println("Please insert a sequence (delimited by space):");
                     String seq = scanner.nextLine();
                     List sequenceList = Arrays.stream(seq.split(" ")).collect(Collectors.toList());
-                    System.out.println(String.format("The sequence is %b", finiteAutomata.testSequence(sequenceList)));
+                    int gotTo = finiteAutomata.testSequence(sequenceList);
+                    System.out.println(String.format("The sequence is %b", gotTo == sequenceList.size()));
+                    if (gotTo != sequenceList.size())
+                        System.out.println(String.format("The sequence is valid until %d",gotTo));
                     break;
                 default:
                     System.out.println("Not valid option!");
