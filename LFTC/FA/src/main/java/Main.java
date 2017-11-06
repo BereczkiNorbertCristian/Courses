@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -32,11 +33,16 @@ public class Main {
                 case "2":
                     System.out.println("Please insert a sequence (delimited by space):");
                     String seq = scanner.nextLine();
-                    List sequenceList = Arrays.stream(seq.split(" ")).collect(Collectors.toList());
+                    List<String> sequenceList = new ArrayList<>();
+                    for(int i=0;i<seq.length();++i){
+                        sequenceList.add(seq.substring(i,i+1));
+                    }
                     int gotTo = finiteAutomata.testSequence(sequenceList);
                     System.out.println(String.format("The sequence is %b", gotTo == sequenceList.size()));
-                    if (gotTo != sequenceList.size())
-                        System.out.println(String.format("The sequence is valid until %d",gotTo));
+                    if (gotTo != sequenceList.size()) {
+                        System.out.println(String.format("The sequence is valid until %d", gotTo));
+                        System.out.println(String.format("Valid sequence until %s",seq.substring(0,gotTo)));
+                    }
                     break;
                 default:
                     System.out.println("Not valid option!");
