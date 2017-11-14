@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
         Scanner scanner = new Scanner(System.in);
-        FiniteAutomata finiteAutomata = new FiniteAutomata();
+        FiniteAutomata finiteAutomata = new FiniteAutomata("input.in");
 
         boolean goOn = true;
         while (goOn) {

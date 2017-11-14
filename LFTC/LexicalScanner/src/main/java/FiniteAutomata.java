@@ -30,8 +30,8 @@ public class FiniteAutomata {
      * @param sequence
      * @return
      */
-    public int testSequence(List<String> sequence){
-        return dfsSearch(startState,0,sequence);
+    public int findSequence(int seqIdx,String sequence){
+        return dfsSearch(startState,seqIdx,sequence);
     }
 
     /**
@@ -46,13 +46,13 @@ public class FiniteAutomata {
      * @param sequence
      * @return
      */
-    private int dfsSearch(String state,int seqIdx,List<String> sequence){
+    private int dfsSearch(String state,int seqIdx,String sequence){
 
-        if(sequence.size() == seqIdx && finalStates.contains(state))
+        if(sequence.length() == seqIdx && finalStates.contains(state))
             return seqIdx;
-        if(sequence.size() == seqIdx)
-            return seqIdx-1;
-        Pair<String,String> pr = Pair.of(state,sequence.get(seqIdx));
+        if(sequence.length() == seqIdx)
+            return seqIdx;
+        Pair<String,String> pr = Pair.of(state,Character.toString(sequence.charAt(seqIdx)));
         if (!transitions.containsKey(pr))
             return seqIdx;
         return dfsSearch(transitions.get(pr),seqIdx + 1,sequence);

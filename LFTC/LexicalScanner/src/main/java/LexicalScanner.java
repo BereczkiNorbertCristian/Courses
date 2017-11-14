@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,8 @@ import java.util.stream.Collectors;
  */
 public class LexicalScanner {
 
+    private static final String         IDENTIFIER_AUTOMATA_FILE    = "identifierAutomata.in";
+    private static final String         CONSTANT_AUTOMATA_FILE      = "constantAutomata.in";
     private static final String         SPECIAL_CHARACTERS_FILE     = "specialCharacters.csv";
     private static final String         KEYWORDS_FILE               = "keywords.csv";
     private static final ClassLoader    CLASS_LOADER                = ClassLoader.getSystemClassLoader();
@@ -27,6 +28,8 @@ public class LexicalScanner {
     private Set<String>     keywords;
     private CodesMap        codesMap;
     private Integer         currentCodeTS = 0;
+    private FiniteAutomata  identifierAutomata;
+    private FiniteAutomata  constantAutomata;
 
     /**
      * Initializes the codes for the special symbols in the language
@@ -39,6 +42,8 @@ public class LexicalScanner {
         this.codesMap = new CodesMap();
         this.specialCharacters = loadSpecialCharacters();
         this.keywords = loadKeywords();
+        this.identifierAutomata = new FiniteAutomata(IDENTIFIER_AUTOMATA_FILE);
+        this.constantAutomata = new FiniteAutomata(CONSTANT_AUTOMATA_FILE);
     }
 
     /**
@@ -73,6 +78,9 @@ public class LexicalScanner {
 
         List<String> lines = reader.lines().collect(Collectors.toList());
 
+        System.out.println("ENTER");
+
+
         int lineNo = 0;
         for (String line : lines) {
             for (int i = 0; i < line.length(); ++i) {
@@ -80,7 +88,8 @@ public class LexicalScanner {
                 int after = 0;
                 if(ch == ' ') continue;
                 if (Character.isLetter(ch)) {
-                    after = getIdxAfter(line, i, Character::isLetter);
+//                    after = getIdxAfter(line, i, Character::isLetter);
+                    after = identifierAutomata.findSequence(i,line);
                     String word = line.substring(i, after);
 
                     if (keywords.contains(word)) {
@@ -92,7 +101,8 @@ public class LexicalScanner {
                         pif.add(Pair.of(codesMap.getIdCode(), symbolTable.get(word)));
                     }
                 } else if (Character.isDigit(ch)) {
-                    after = getIdxAfter(line, i, Character::isDigit);
+//                    after = getIdxAfter(line, i, Character::isDigit);
+                    after = constantAutomata.findSequence(i,line);
                     String constValue = line.substring(i, after);
 
                     symbolTable.computeIfAbsent(constValue, k -> ++currentCodeTS);
@@ -113,6 +123,8 @@ public class LexicalScanner {
             ++lineNo;
         }
         verifyPIF(pif);
+
+        System.out.println("DONE");
 
         return Pair.of(pif,symbolTable);
     }
