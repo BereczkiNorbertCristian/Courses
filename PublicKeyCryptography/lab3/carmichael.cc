@@ -14,8 +14,10 @@ using namespace std;
 
 #define int int64_t
 
-const int maxn = 100003;
+const int maxn = 1000003;
 const int maxk = 1003;
+
+int prim[maxn];
 
 int mul(int a,int b,int n){
 	return (a*b)%n;
@@ -51,6 +53,77 @@ bool isCarmichael(int x){
 	return ok;
 }
 
+void bruteForceCarmichael(int upperBound){
+
+	int counter = 0;
+	for(int i=3;i<upperBound;++i){
+		if(isCarmichael(i)){
+			cout << i << '\n';
+			++counter;
+		}
+	}
+	cout << "There were: " << counter << " carmichael numbers" << '\n';
+
+
+}
+
+vector<int> getSieve(int N){
+
+	vector<int> res;
+	int i;
+	int j;
+	for (i = 2; i <= N; ++i)
+        prim[i] = 1;
+    for (i = 2; i <= N; ++i)
+        if (prim[i])
+        {
+            res.pb(i);
+            for (j = i+i; j <= N; j += i)
+                prim[j] = 0;
+        }
+    return res;
+}
+
+bool checkSquareFree(int x,vector<int>& sieve){
+
+	int i = 0;
+	while(i < sieve.size() && sieve[i]*sieve[i] <= x){
+		if(x % (sieve[i]*sieve[i]) == 0) return false;
+		++i;
+	}
+	return true;
+}
+
+void smartCarmichael(int upperBound){
+
+	int cnt = 0;
+	vector<int> sieve = getSieve(upperBound);
+	for(int i=3;i<upperBound;++i){
+		if(i%2 == 0) continue;
+		bool cool = true;
+		int divs = 0;
+		for(int d=2;d*d<=i;++d){
+			divs+= (i%d == 0) ? 1 : 0;
+			if(i%d == 0){
+				if(prim[d]){
+					cool &= ((i-1)%(d-1) == 0);
+				}
+
+				if(prim[i/d]){
+					cool &= ((i-1)%((i/d)-1) == 0);
+				}
+			}
+
+		}
+		cool &= checkSquareFree(i,sieve);
+		if(cool && divs > 0){
+			cout << i << '\n';
+			++cnt;
+		}
+	}
+	cout << cnt << '\n';
+}
+
 int32_t main(){
 
 	#ifndef ONLINE_JUDGE
@@ -61,14 +134,10 @@ int32_t main(){
 
 	int n;
 	cin >> n;
-	int counter = 0;
-	for(int i=3;i<n;++i){
-		if(isCarmichael(i)){
-			cout << i << '\n';
-			++counter;
-		}
-	}
-	cout << "There were: " << counter << " carmichael numbers" << '\n';
+	// bruteForceCarmichael(n);
+	smartCarmichael(n);
 
+
+	
 	return 0;
 }
