@@ -38,8 +38,8 @@ int n;
 int32_t main(){
 
 	#ifndef ONLINE_JUDGE
-	freopen("algo1.in","r",stdin);
-	freopen("algo1.out","w",stdout);
+	freopen("input2.in","r",stdin);
+	// freopen("algo1.out","w",stdout);
 	#endif
 
 	ios_base::sync_with_stdio(false);
@@ -49,9 +49,10 @@ int32_t main(){
 	for(int i=0;i<n;i++){
 		cin >> a >> b ;
 		auto t1 = std::chrono::high_resolution_clock::now();
-		gcd(a,b);
+		int gcdRES = gcd(a,b);
 		auto t2 = std::chrono::high_resolution_clock::now();
-		cout << countDigs(a) << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
+		// cout << countDigs(a) << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
+		cout << gcdRES << '\n';
 	}
 
 
