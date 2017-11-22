@@ -40,7 +40,7 @@ int main(){
 		NTL::ZZ reszz = my_gcd(azz,bzz);
 		auto t2 = std::chrono::high_resolution_clock::now();
 		cerr << reszz << '\n';
-		cout << a.length() << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
+		// cout << a.length() << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
 	}
 
 	return 0;

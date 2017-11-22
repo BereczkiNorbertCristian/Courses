@@ -138,8 +138,9 @@ public class LexicalScanner {
      */
     public void verifyPIF(List<Pair<Integer,Integer>> pif){
         for(int i=0;i<pif.size()-1;++i){
-            if(pif.get(i).getValue()!=0 && pif.get(i+1).getValue()!=0)
-                throw new RuntimeException(String.format("There is inconsistency in the file line %d at %d",lineNumbers.get(i)+1,begPositions.get(i)+1));
+//            if(pif.get(i).getValue()!=0 && pif.get(i+1).getValue()!=0)
+//                throw new RuntimeException(String.format("There is inconsistency in the file line %d at %d",lineNumbers.get(i)+1,begPositions.get(i)+1));
+
         }
     }
 

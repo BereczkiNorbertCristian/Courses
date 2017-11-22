@@ -32,7 +32,7 @@ int simpleGcd(int a,int b){
 
 	int to = min(a,b);
 	int d = 1;
-	for(int i=1;i<to;++i){
+	for(int i=1;i<=to;++i){
 		if(a % i == 0 && b % i == 0){
 			d = i;
 		}
@@ -65,8 +65,9 @@ int32_t main(){
 	for(int i=0;i<n;i++){
 		cin >> a >> b ;
 		auto t1 = std::chrono::high_resolution_clock::now();
-		simpleGcd(a,b);
+		int rs = simpleGcd(a,b);
 		auto t2 = std::chrono::high_resolution_clock::now();
+		cerr << rs << '\n';
 		cout << countDigs(a) << ' ' << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
 	}
 
