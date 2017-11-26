@@ -15,15 +15,15 @@ using namespace std;
 #define int long long
 
 // SIMPLE KARATSUBA
-
 const int maxn = 100003;
 const int maxk = 1003;
 
+	vector<int> X,Q,RES;
 
 template<typename T>
 struct KaratsubaSolver {
-    static const int N = (1 << 9);
-    T A[N], B[N], R[6 * N];
+    static const int N = (1 << 11);
+    T A[N], B[N], R[10 * N];
 
     void gradeSchool(T A[], T B[], T R[], int n) {
         int i, j;
@@ -68,6 +68,7 @@ struct KaratsubaSolver {
         int N = argA.size() + argB.size() + 1;
         while(N != (N & -N)) ++N;
 
+
         fill(A, A + N, 0);
         for(int i = 0; i < argA.size(); ++i)
             A[i] = argA[i];
@@ -87,6 +88,19 @@ struct KaratsubaSolver {
 
 };
 
+
+void initArrays(int n){
+
+	srand(time(0));
+	for(int i=0;i<n;++i){
+		X[i] = rand() % 1000;
+	}
+	for(int i=0;i<n;++i){
+		Q[i] = rand() % 1000;
+	}
+
+}
+
 int32_t main(){
 
 	#ifndef ONLINE_JUDGE
@@ -95,30 +109,29 @@ int32_t main(){
 
 	ios_base::sync_with_stdio(false);
 
-	vector<int> X,Q,RES;
-
 	int n;
 	cin >> n;
-	X.resize(n);Q.resize(n);
 
+	X.resize(n);Q.resize(n);
 
 	for(int i=0;i<n;++i){
 		cin >> X[i];
 	}
-
 	for(int i=0;i<n;++i){
 		cin >> Q[i];
 	}
 
-
 	KaratsubaSolver<int> polmul;
+	auto t1 = std::chrono::high_resolution_clock::now();
 	RES = polmul.Multiply(X,Q);
+	auto t2 = std::chrono::high_resolution_clock::now();
+
+	cout << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
 
 	for(int ch : RES){
 		cout << ch << ' ';
 	}
 	cout << '\n';
-
 
 	return 0;
 }

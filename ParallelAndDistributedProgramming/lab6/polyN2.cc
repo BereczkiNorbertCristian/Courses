@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-
+#include<chrono>
 #define ll long long
 #define pii pair<int,int>
 #define pll pair<ll,ll>
@@ -22,6 +22,17 @@ const int maxk = 1003;
 vector<int> X,Q,RES;
 int n;
 
+void initArrays(){
+
+	srand(time(0));
+	for(int i=0;i<n;++i){
+		X[i] = rand() % 1000;
+	}
+	for(int i=0;i<n;++i){
+		Q[i] = rand() % 1000;
+	}
+
+}
 
 int32_t main(){
 
@@ -31,25 +42,20 @@ int32_t main(){
 
 	ios_base::sync_with_stdio(false);
 
-	cin >> n;
+	n = 1000;
 	X.resize(n);Q.resize(n);RES.resize(2*n,0);
-	for(int i=0;i<n;++i){
-		cin >> X[i];
-	}
-	for(int i=0;i<n;++i){
-		cin >> Q[i];
-	}
+	
 
+	auto t1 = std::chrono::high_resolution_clock::now();
 	for(int i=0;i<n;++i){
 		for(int j=0;j<n;++j){
 			RES[i + j] += X[i] * Q[j];
 		}
 	}
+	auto t2 = std::chrono::high_resolution_clock::now();
+	cout << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
 
-	for(int i=0;i<2*n;++i){
-		cout << RES[i] <<' ';
-	}
-	cout << '\n';
+
 
 	return 0;
 }

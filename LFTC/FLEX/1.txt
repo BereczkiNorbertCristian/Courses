@@ -1,0 +1,12 @@
+int n;
+int x;
+int sum;
+
+sum = 0;
+dorepeat(n > 0) :
+	scanIO(x);
+	sum = sum + x;
+	n = n - 1;
+done;
+putIO(sum);
+
