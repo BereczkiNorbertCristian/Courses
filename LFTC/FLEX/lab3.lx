@@ -16,12 +16,12 @@ int pifLength = 0;
 int constLength = 0;
 int identifierLength = 0;
 int identifierCode = 0;
-int constCode = 0;
+int constCode = 1;
 PIF program[300];
 
 TSiden TSidentifier[30];
 
-float TSconstants[30];
+TSiden TSconstants[30];
 
 void addPIF(int id1,int id2){
 	program[pifLength].id1 = id1;
@@ -29,17 +29,17 @@ void addPIF(int id1,int id2){
 	++pifLength;
 }
 
-void addConst(float atom){
+void addConst(char* atom){
 	int found = 0;
 	int i ;
 	for(int i=0;i<constLength;++i){
-		if(TSconstants[i] == atom){
+		if(strcmp(TSconstants[i].name, atom) == 0){
 			found = 1;
 			addPIF(constCode,i);
 		}
 	}
 	if(found == 0){
-		TSconstants[constLength] = atom;
+		strcpy(TSconstants[constLength].name,atom);
 		addPIF(constCode,constLength);
 		++constLength;
 	}
@@ -78,8 +78,8 @@ void showPIF(){
 
 void showConst(){
 	printf("Constants: \n");
-	for(int i=0;i<identifierLength;++i){
-		printf(" %s|%d",TSidentifier[i].name,i);
+	for(int i=0;i<constLength;++i){
+		printf(" %s|%d",TSconstants[i].name,i);
 	}
 	printf("\n");
 }
@@ -99,12 +99,14 @@ void show(){
 %}
 
 %option noyywrap
-DIGIT			[0-9]
+WITHZERO		[0-9]
+DIGIT			[1-9]
+DIGITS			{DIGIT}{WITHZERO}*|0
 ID 				[a-z]
 
+
 %%
-{DIGIT}+				addConst(atoi(yytext));
-{DIGIT}+"."{DIGIT}*		addConst(atof(yytext));
+{DIGITS}		addConst(yytext);
 
 \identifier 			addPIF(0,0);
 \constant 				addPIF(1,0);
@@ -138,7 +140,7 @@ putIO 					addPIF(11,0);
 \and 					addPIF(29,0);
 \:						addPIF(30,0);
 \%						addPIF(31,0);
-{ID}					addIdentifier(yytext);
+{ID}+					addIdentifier(yytext);
 
 [ \t\n]+					;/* eat up whitespace */
 . {

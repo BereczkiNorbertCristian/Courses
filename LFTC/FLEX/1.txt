@@ -2,11 +2,11 @@ int n;
 int x;
 int sum;
 
-sum = 0;
-dorepeat(n > 0) :
+sum=0;
+dorepeat(n>0) :
 	scanIO(x);
 	sum = sum + x;
-	n = n - 1;
+	n = n -3;
 done;
 putIO(sum);
 
