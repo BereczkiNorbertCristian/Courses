@@ -78,22 +78,22 @@ arith_exp: value PLUS value {cout << "PLUS\n"; }
          | value DIV value{cout << "DIV\n"; }
          ;
 
-conditional_statement: IF_TOKEN bool_exp ':' statements DONE_TOKEN ';'    %prec LOWER_THAN_ELSE_TOKEN ; 
+conditional_statement: IF_TOKEN '(' bool_exp ')' ':' statements DONE_TOKEN ';'    %prec LOWER_THAN_ELSE_TOKEN ; 
                |  IF_TOKEN bool_exp ':' statements DONE_TOKEN ';' ELSE_TOKEN ':' statements DONE_TOKEN ';'
                ;
 
 bool_exp: value BOOL_OP value
         ;
 
-dorepeat_statement: DOREPEAT_TOKEN bool_exp ':' statements DONE_TOKEN ';'
-        	 ;
+dorepeat_statement: DOREPEAT_TOKEN '(' bool_exp ')' ':' statements DONE_TOKEN ';'
+        	      ;
 
 read_statement: READ_TOKEN '(' IDENTIFIER_TOKEN ')' ';'
          	  ;
 
 write_statement: WRITE_TOKEN '(' value ')' ';'
           	   | WRITE_TOKEN '(' bool_exp ')' ';'
-
+               ;
 
 %%
 

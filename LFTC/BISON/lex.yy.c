@@ -606,8 +606,9 @@ void show(){
 	showConst();
 	showId();
 	showPIF();
+	printf("\n WENT OK!\n");
 }
-#line 611 "lex.yy.c"
+#line 612 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -825,9 +826,9 @@ YY_DECL
 		}
 
 	{
-#line 108 "doflex.lex"
+#line 109 "doflex.lex"
 
-#line 831 "lex.yy.c"
+#line 832 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -886,161 +887,161 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 109 "doflex.lex"
+#line 110 "doflex.lex"
 {addConst(yytext); return CONSTANT_TOKEN;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 111 "doflex.lex"
+#line 112 "doflex.lex"
 {addPIF(5,0); return DONE_TOKEN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 112 "doflex.lex"
+#line 113 "doflex.lex"
 {addPIF(6,0); return IF_TOKEN;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 113 "doflex.lex"
+#line 114 "doflex.lex"
 {addPIF(7,0); return DOREPEAT_TOKEN;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 114 "doflex.lex"
+#line 115 "doflex.lex"
 {addPIF(8,0); return TYPE_TOKEN;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 115 "doflex.lex"
+#line 116 "doflex.lex"
 {addPIF(9,0); return TYPE_TOKEN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 116 "doflex.lex"
+#line 117 "doflex.lex"
 {addPIF(10,0); return READ_TOKEN;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 117 "doflex.lex"
+#line 118 "doflex.lex"
 {addPIF(11,0); return WRITE_TOKEN;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 118 "doflex.lex"
+#line 119 "doflex.lex"
 {addPIF(12,0); return yytext[0];}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 119 "doflex.lex"
+#line 120 "doflex.lex"
 {addPIF(13,0); return yytext[0];}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 120 "doflex.lex"
+#line 121 "doflex.lex"
 {addPIF(14,0); return yytext[0];}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 121 "doflex.lex"
+#line 122 "doflex.lex"
 {addPIF(15,0); return PLUS;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 122 "doflex.lex"
+#line 123 "doflex.lex"
 {addPIF(16,0); return MULT;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 123 "doflex.lex"
+#line 124 "doflex.lex"
 {addPIF(17,0); return DIV;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 124 "doflex.lex"
+#line 125 "doflex.lex"
 {addPIF(18,0); return MINUS;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 125 "doflex.lex"
+#line 126 "doflex.lex"
 {addPIF(19,0); return ASSIGN_TOKEN;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 126 "doflex.lex"
+#line 127 "doflex.lex"
 {addPIF(20,0); return BOOL_OP;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 127 "doflex.lex"
+#line 128 "doflex.lex"
 {addPIF(21,0); return BOOL_OP;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 128 "doflex.lex"
+#line 129 "doflex.lex"
 {addPIF(22,0); return BOOL_OP;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 129 "doflex.lex"
+#line 130 "doflex.lex"
 {addPIF(23,0); return BOOL_OP;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 130 "doflex.lex"
+#line 131 "doflex.lex"
 {addPIF(24,0); return BOOL_OP;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 131 "doflex.lex"
+#line 132 "doflex.lex"
 {addPIF(25,0); return BOOL_OP;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 132 "doflex.lex"
+#line 133 "doflex.lex"
 {addPIF(26,0); return yytext[0];}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 133 "doflex.lex"
+#line 134 "doflex.lex"
 {addPIF(27,0); return yytext[0];}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 134 "doflex.lex"
+#line 135 "doflex.lex"
 {addPIF(30,0); return yytext[0];}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 135 "doflex.lex"
+#line 136 "doflex.lex"
 {addPIF(31,0); return yytext[0];}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 136 "doflex.lex"
+#line 137 "doflex.lex"
 {addPIF(32,0); return ELSE_TOKEN;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 137 "doflex.lex"
+#line 138 "doflex.lex"
 {addIdentifier(yytext); return IDENTIFIER_TOKEN;}
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 139 "doflex.lex"
+#line 140 "doflex.lex"
 ;/* eat up whitespace */
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 141 "doflex.lex"
+#line 142 "doflex.lex"
 printf("ERROR\n");
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 143 "doflex.lex"
+#line 144 "doflex.lex"
 ECHO;
 	YY_BREAK
-#line 1044 "lex.yy.c"
+#line 1045 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2041,6 +2042,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 143 "doflex.lex"
+#line 144 "doflex.lex"
 
 

@@ -95,6 +95,7 @@ void show(){
 	showConst();
 	showId();
 	showPIF();
+	printf("\n WENT OK!\n");
 }
 %}
 
