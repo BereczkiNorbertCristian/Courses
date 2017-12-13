@@ -1,0 +1,3 @@
+#!/bin/bash
+g++ -std=c++11 -pthread source.cc -o src && ./src
+

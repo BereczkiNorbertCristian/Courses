@@ -1,0 +1,12 @@
+
+new_local_repository(
+	name = "linux_ntl",
+	build_file = "BUILD.ntl",
+	path = "/usr/local",
+)
+
+bind(
+	name = "ntl",
+	actual = "@linux_ntl//:ntl",
+)
+

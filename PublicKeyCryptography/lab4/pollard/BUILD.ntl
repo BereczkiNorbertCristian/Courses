@@ -1,0 +1,7 @@
+cc_library(
+	name = "ntl",
+	srcs = ["lib/libntl.a"],
+	hdrs = glob(["include/NTL/*.h"]),
+	visibility = ["//visibility:public"],
+)
+
