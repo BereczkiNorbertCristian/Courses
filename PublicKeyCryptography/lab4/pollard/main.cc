@@ -101,7 +101,7 @@ int main(){
 		ZZ reszz = pollardp(nZZ);
 		auto t2 = std::chrono::high_resolution_clock::now();
 		cout << reszz << '\n';
-		fstats << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
+		fstats << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() << '\n';
 	}
 
 	return 0;

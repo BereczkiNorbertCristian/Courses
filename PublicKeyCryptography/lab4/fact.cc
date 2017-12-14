@@ -39,12 +39,13 @@ int32_t main(){
 			if(n % div == 0) {
 				while(n % div == 0 ) n /= div;
 				dvs.pb(div);
+				break;
 			}
 			++div;
 			if(div > n) break;
 		}
 		auto t2 = std::chrono::high_resolution_clock::now();
-		cout << std::chrono::duration_cast<std::chrono::nanoseconds>(t2-t1).count() << '\n';
+		cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() << '\n';
 		for(int ch : dvs) {
 			cerr << ch << ' ';
 		}
