@@ -1,0 +1,2 @@
+#!/bin/bash
+mpic++ naive.c && mpirun -np 3 ./a.out
