@@ -93,10 +93,10 @@ void initArrays(int n){
 
 	srand(time(0));
 	for(int i=0;i<n;++i){
-		X[i] = rand() % 1000;
+		X[i] = 1;
 	}
 	for(int i=0;i<n;++i){
-		Q[i] = rand() % 1000;
+		Q[i] = 1;
 	}
 
 }
@@ -111,14 +111,14 @@ int32_t main(){
 
 	int n;
 	cin >> n;
-
+    n = 16;
 	X.resize(n);Q.resize(n);
 
 	for(int i=0;i<n;++i){
-		cin >> X[i];
+		X[i] = 1;
 	}
 	for(int i=0;i<n;++i){
-		cin >> Q[i];
+		Q[i] = 1;
 	}
 
 	KaratsubaSolver<int> polmul;
