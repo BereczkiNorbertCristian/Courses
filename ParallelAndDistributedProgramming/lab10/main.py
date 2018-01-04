@@ -4,22 +4,23 @@ import os,os.path
 import time
 import queue
 
-# (2 -> Prepare, variable_id, new_value, OPERATION_ID, pseudo_lamport_timestamp)
-# (3 -> Commit, variable_id,new_value, OPERATION_ID, pseudo_lamport_timestamp)
+# (2 -> Prepare, variable_id, new_value, COMPARATOR_ID, pseudo_lamport_timestamp)
+# (3 -> Commit, variable_id,new_value, COMPARATOR_ID, pseudo_lamport_timestamp)
 
-TIME_TO_WAIT = 2  # seconds
-OPERATION_TYPE = 0
-VARIABLE_ID = 1
-NEW_VALUE = 2
-OPERATION_ID = 3
-PSEUDO_LAMPORT_TIMESTAMP = 4
+TIME_TO_WAIT 				= 2  # seconds
+OPERATION_TYPE 				= 0
+VARIABLE_ID 				= 1
+NEW_VALUE 					= 2
+COMPARATOR_ID 				= 3
+PSEUDO_LAMPORT_TIMESTAMP 	= 4
 
 # Operation types
-TO_DO_OPERATION = 1
-PREPARE_OPERATION = 2
-OK_OPERATION = 3
-COMMIT_OPERATION = 4
-SLEEP_OPERATION = 5
+SET_OPERATION 			= 1
+PREPARE_OPERATION 		= 2
+OK_OPERATION 			= 3
+COMMIT_OPERATION 		= 4
+SLEEP_OPERATION 		= 5
+COMPARE_SET_OPERATION 	= 6
 
 
 def log(filename, to_write):
@@ -34,7 +35,7 @@ def pretify_operation_type(operation_type):
 	global PREPARE_OPERATION
 	global COMMIT_OPERATION
 	global OK_OPERATION
-	global TO_DO_OPERATION
+	global SET_OPERATION
 	global SLEEP_OPERATION
 	if operation_type == PREPARE_OPERATION:
 		return "Prepare"
@@ -42,10 +43,12 @@ def pretify_operation_type(operation_type):
 		return "Commit"
 	elif operation_type == OK_OPERATION:
 		return "Ok"
-	elif operation_type == TO_DO_OPERATION:
-		return "TODO"
+	elif operation_type == SET_OPERATION:
+		return "Set"
 	elif operation_type == SLEEP_OPERATION:
 		return "Sleep"
+	elif operation_type == COMPARE_SET_OPERATION:
+		return "Compare+Set"
 	return "None"
 
 
@@ -53,19 +56,19 @@ def dict_from_tuple(tpl):
 	global OPERATION_TYPE
 	global VARIABLE_ID
 	global NEW_VALUE
-	global OPERATION_ID
+	global COMPARATOR_ID
 	global PSEUDO_LAMPORT_TIMESTAMP
 	return {
 		'OPERATION': pretify_operation_type(tpl[OPERATION_TYPE]),
 		'VARIABLE_ID': tpl[VARIABLE_ID],
 		'NEW_VALUE': tpl[NEW_VALUE],
-		'OPERATION_ID': tpl[OPERATION_ID],
+		'COMPARATOR_ID': tpl[COMPARATOR_ID],
 		'LAMPORT_TIMESTAMP': tpl[PSEUDO_LAMPORT_TIMESTAMP]
 	}
 
 
 def format_tuple(tpl):
-	result_string = '''({OPERATION}, var_idx: {VARIABLE_ID}, new_value: {NEW_VALUE}, operation_id: {OPERATION_ID}, Lamport_Timestamp: {LAMPORT_TIMESTAMP})'''
+	result_string = '''({OPERATION}, var_idx: {VARIABLE_ID}, new_value: {NEW_VALUE}, comparator: {COMPARATOR_ID}, Lamport_Timestamp: {LAMPORT_TIMESTAMP})'''
 	dict = dict_from_tuple(tpl)
 	return result_string.format(**dict)
 
@@ -76,12 +79,12 @@ def child(master_queue, my_queue, variables, operations):
 	global OPERATION_TYPE
 	global VARIABLE_ID
 	global NEW_VALUE
-	global OPERATION_ID
+	global COMPARATOR_ID
 	global PREPARE_OPERATION
 	global COMMIT_OPERATION
 	global OK_OPERATION
 	global PSEUDO_LAMPORT_TIMESTAMP
-	global TO_DO_OPERATION
+	global SET_OPERATION
 
 	log_filename = "logs/" + str(os.getpid()) + ".log"
 	my_operations_idx = 0
@@ -98,20 +101,20 @@ def child(master_queue, my_queue, variables, operations):
 			pseudo_lamport_timestamp = max(
 				pseudo_lamport_timestamp + 1, current[PSEUDO_LAMPORT_TIMESTAMP] + 1)
 			to_log = (current[OPERATION_TYPE], current[VARIABLE_ID], current[
-				NEW_VALUE], current[OPERATION_ID], pseudo_lamport_timestamp)
+				NEW_VALUE], current[COMPARATOR_ID], pseudo_lamport_timestamp)
 			log(log_filename, format_tuple(to_log))
 
 			if current[OPERATION_TYPE] == PREPARE_OPERATION:
 				pseudo_lamport_timestamp += 1
 				to_put = (OK_OPERATION, current[VARIABLE_ID], current[
-					NEW_VALUE], current[OPERATION_ID], pseudo_lamport_timestamp)
+					NEW_VALUE], current[COMPARATOR_ID], pseudo_lamport_timestamp)
 				log(log_filename, format_tuple(to_put))
 				master_queue.put(to_put)
 
 			elif current[OPERATION_TYPE] == COMMIT_OPERATION:
 				pseudo_lamport_timestamp += 1
 				to_log = (COMMIT_OPERATION, current[VARIABLE_ID], current[
-					NEW_VALUE], current[OPERATION_ID], pseudo_lamport_timestamp)
+					NEW_VALUE], current[COMPARATOR_ID], pseudo_lamport_timestamp)
 				log(log_filename, format_tuple(to_log))
 				variables[current[VARIABLE_ID]] = current[NEW_VALUE]
 
@@ -121,9 +124,9 @@ def child(master_queue, my_queue, variables, operations):
 		if my_operations_idx < len(operations):
 			pseudo_lamport_timestamp += 1
 
-			to_do_operation = operations[my_operations_idx]
-			to_put = (TO_DO_OPERATION, to_do_operation[VARIABLE_ID], to_do_operation[
-			          NEW_VALUE], -1, pseudo_lamport_timestamp)
+			to_set_operation = operations[my_operations_idx]
+			to_put = (to_set_operation[OPERATION_TYPE], to_set_operation[VARIABLE_ID], to_set_operation[
+			          NEW_VALUE], to_set_operation[COMPARATOR_ID], pseudo_lamport_timestamp)
 			log(log_filename, format_tuple(to_put))
 			master_queue.put(to_put)
 
@@ -135,12 +138,12 @@ def master(master_queue, child_queues, variables):
 	global OPERATION_TYPE
 	global VARIABLE_ID
 	global NEW_VALUE
-	global OPERATION_ID
+	global COMPARATOR_ID
 	global PREPARE_OPERATION
 	global COMMIT_OPERATION
 	global OK_OPERATION
 	global PSEUDO_LAMPORT_TIMESTAMP
-	global TO_DO_OPERATION
+	global SET_OPERATION
 	global SLEEP_OPERATION
 
 	log_filename = "logs/master.log"
@@ -156,7 +159,7 @@ def master(master_queue, child_queues, variables):
 		if current != None:
 			variable_id = current[VARIABLE_ID]
 			new_value = current[NEW_VALUE]
-			if current[OPERATION_TYPE] == TO_DO_OPERATION:
+			if current[OPERATION_TYPE] == SET_OPERATION:
 				if variable_id in in_progress_operations_dict.keys():
 					master_queue.put((SLEEP_OPERATION, -1, -1, -1, -1))
 					master_queue.put(current)
@@ -165,7 +168,7 @@ def master(master_queue, child_queues, variables):
 						pseudo_lamport_timestamp = max(
 	    				    pseudo_lamport_timestamp + 1, current[PSEUDO_LAMPORT_TIMESTAMP] + 1)
 						to_put = (PREPARE_OPERATION, variable_id, new_value,
-	    				          current[VARIABLE_ID], pseudo_lamport_timestamp)
+	    				          current[COMPARATOR_ID], pseudo_lamport_timestamp)
 						child_queues[q_idx].put(to_put)
 					in_progress_operations_dict[variable_id] = 0
 
@@ -174,7 +177,7 @@ def master(master_queue, child_queues, variables):
 				pseudo_lamport_timestamp = max(
 	    		    pseudo_lamport_timestamp + 1, current[PSEUDO_LAMPORT_TIMESTAMP] + 1)
 				to_log = (OK_OPERATION, variable_id, new_value, current[
-	    		          OPERATION_ID], pseudo_lamport_timestamp)
+	    		          COMPARATOR_ID], pseudo_lamport_timestamp)
 				log(log_filename, format_tuple(to_log))
 
 				if in_progress_operations_dict[variable_id] == len(child_queues):
@@ -182,10 +185,25 @@ def master(master_queue, child_queues, variables):
 						pseudo_lamport_timestamp = max(
 						    pseudo_lamport_timestamp + 1, current[PSEUDO_LAMPORT_TIMESTAMP] + 1)
 						to_put = (COMMIT_OPERATION, variable_id, new_value,
-						          current[OPERATION_ID], pseudo_lamport_timestamp)
+						          current[COMPARATOR_ID], pseudo_lamport_timestamp)
 						log(log_filename, format_tuple(to_put))
 						child_queues[q_idx].put(to_put)
 					in_progress_operations_dict.pop(variable_id,None)
+					variables[variable_id] = new_value
+
+			elif current[OPERATION_TYPE] == COMPARE_SET_OPERATION:
+				if variable_id in in_progress_operations_dict.keys():
+					master_queue.put((SLEEP_OPERATION, -1, -1, -1, -1))
+					master_queue.put(current)
+				elif variables[variable_id] == current[COMPARATOR_ID]:
+					# SAME AS SET_OPERATION FROM NOW ON
+					for q_idx in range(0, len(child_queues)):
+						pseudo_lamport_timestamp = max(
+	    				    pseudo_lamport_timestamp + 1, current[PSEUDO_LAMPORT_TIMESTAMP] + 1)
+						to_put = (PREPARE_OPERATION, variable_id, new_value,
+	    				          current[COMPARATOR_ID], pseudo_lamport_timestamp)
+						child_queues[q_idx].put(to_put)
+					in_progress_operations_dict[variable_id] = 0
 
 
 			elif current[OPERATION_TYPE] == SLEEP_OPERATION:
@@ -208,12 +226,12 @@ def get_operations():
     return [
         [(1, 1, 3, -1, -1), (1, 2, 2, -1, -1), (1, 4, 12, -1, -1)],
         [(1, 2, 3, -1, -1), (1, 3, 4, -1, -1)],
-        [(1, 3, 9, -1, -1), (1, 1, 1, -1, -1)]
+        [(1, 3, 9, -1, -1), (1, 1, 1, -1, -1), (6,1,2,1,-1)]
     ]
 
 if __name__ == '__main__':
 
-    CHILDREN_NO = 2
+    CHILDREN_NO = 3
     variables = [0] * 5
     operations = get_operations()
 
