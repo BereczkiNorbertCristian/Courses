@@ -1,0 +1,2 @@
+#!/bin/bash
+flex doflex.lex && bison -d dobis.y && g++ dobis.tab.c lex.yy.c -lfl -include dobis.tab.h && ./a.out

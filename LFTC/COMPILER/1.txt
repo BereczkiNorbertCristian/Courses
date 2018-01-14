@@ -1,0 +1,4 @@
+int n;
+scanIO(n);
+n=n+1;
+putIO(n);
