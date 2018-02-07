@@ -1,4 +1,4 @@
 int n;
 scanIO(n);
-n=n+1;
+n=n+2;
 putIO(n);

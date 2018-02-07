@@ -49,7 +49,7 @@ _start:
 	mov ecx, 2
 	call string_to_int
 	mov [n], eax
-	MOV eax, 1
+	MOV eax, 2
 	ADD eax, [n]
 	MOV [n], eax
 	MOV eax, [n]

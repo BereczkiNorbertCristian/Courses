@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int n = 32;
+int n = 16;
 // int proc_size = 0;
 int size_int = sizeof(int);
 
