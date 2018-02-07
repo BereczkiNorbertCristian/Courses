@@ -60,17 +60,18 @@ void solve(vector<int> colors, int T) {
 		for(auto& f : futures) f.get();
 	}
 	else {
-		if(T == 1) {
-			solve_basic(colors,0,k);
-			return;
-		}
+		vector<future<void>> futures;
 		int step = k / T;
-		int beg_step = 0;
+		int beg_step = step;
 		while(beg_step < k) {
 			int end_step = min(beg_step + step,k);
-			solve_basic(colors,beg_step,end_step);
+			futures.push_back(async([&colors,beg_step,end_step](){
+				solve_basic(colors,beg_step,end_step);
+			}));
 			beg_step += step;
 		}
+		solve_basic(colors,0,step);
+		for(auto& f : futures) f.get();
 	}
 }
 
