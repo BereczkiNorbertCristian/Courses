@@ -11,7 +11,7 @@ public class Patient {
 	
 	public Patient() {};
 	
-	public Patient(String Name, String SSN, String address) 
+	public Patient(String SSN, String Name, String address)
 	{
 			this.Patient_ID = SSN;
 			this.Name = Name;
@@ -56,7 +56,7 @@ public class Patient {
 	
 	/** Others */
 	public String toString() {
-	    return Name + "," + SSN + "," +address;
+	    return SSN + "," + Name + "," +address;
 	//	return Name + "," + consNum;
 	}
 }
