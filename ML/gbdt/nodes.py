@@ -46,15 +46,17 @@ class DecisionNode(Node):
     def next(self, x):
         if x is None:
             return self.left
-        if self.attr_type == FeatureType.CATEGORICAL:
-            if type(x[self.attr_name]) == type(self.value) and \
-                x[self.attr_name] == self.value:
+        if self.feature_type == FeatureType.CATEGORICAL:
+            if x[self.feature] == self.value:
                 return self.left
             else:
                 return self.right
-        if self.attr_type == FeatureType.CONTINUOUS:
-            if type(x[self.attr_name]) == type(self.value) and \
-                x[self.attr_name] < self.value:
+        if self.feature_type == FeatureType.CONTINUOUS:
+            print(self.feature)
+            print(x)
+            print(x[self.feature])
+            print(self.value)
+            if x[self.feature] < self.value:
                 return self.left
             else:
                 return self.right

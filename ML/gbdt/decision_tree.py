@@ -10,6 +10,7 @@ from nodes import DecisionNode, LeafNode, FeatureType
 # We will treat D as a dataframe, so please convert it to a data frame
 # if you haven't
 
+DEB_ITER = 0
 LENGTH = 0
 
 class DecisionTree:
@@ -19,7 +20,7 @@ class DecisionTree:
         self.root = None
         self.target_name = None
         self.EPS = 0.0001
-        sel.MIN_STOP_SIZE = 10
+        self.MIN_STOP_SIZE = 10
 
 
     # We will consider the target type as a float
@@ -48,6 +49,7 @@ class DecisionTree:
 
 
     def stopping_criterion(self, D):
+        global LENGTH
         if D[self.target_name].var() < self.EPS or \
             D.shape[LENGTH] < self.MIN_STOP_SIZE:
             return True
@@ -55,6 +57,7 @@ class DecisionTree:
 
 
     def compute_var(self, D, DL, DR):
+        global LENGTH
         var_split = D.shape[LENGTH] * D[self.target_name].var()
         var_split -= DL.shape[LENGTH] * DL[self.target_name].var()
         var_split -= DR.shape[LENGTH] * DR[self.target_name].var()
@@ -77,9 +80,12 @@ class DecisionTree:
             best['feature'] = split_column
             best['value'] = split_value
             best['feature_type'] = FeatureType.CONTINUOUS
+        return best
 
 
     def split_best(self, node, D):
+        global DEB_ITER
+        global LENGTH
         best = {
             'var': None,
             'feature': None,
@@ -89,14 +95,14 @@ class DecisionTree:
 
         for c in D.columns:
 
-            if len(D[c].unique()) == 1:
-                continue
+            if c == self.target_name: continue
+            if len(D[c].unique()) == 1: continue
 
             if D[c].dtype == np.float64:
                 # Treat as continuous feature
                 if D[c].shape[LENGTH] <= 11:
                     # We have a few number of examples
-                    sorted_df = df.sort_values(by=[c])
+                    sorted_df = D.sort_values(by=[c])
                     for i in range(1,D[c].unique().shape[LENGTH]):
                         split_value = D[c].iloc[i]
                         best = self.update_best_dict(best, D, c, split_value)
@@ -128,6 +134,7 @@ class DecisionTree:
 
     def predict(self, x):
         current_node = self.root
-        while isinstance(current_node, LeafNode):
+        while isinstance(current_node, DecisionNode):
             current_node = current_node.next(x)
+        print(current_node)
         return current_node.prediction_value
