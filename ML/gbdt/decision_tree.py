@@ -19,7 +19,7 @@ class DecisionTree:
     def __init__(self):
         self.root = None
         self.target_name = None
-        self.EPS = 0.0001
+        self.EPS = 0.01
         self.MIN_STOP_SIZE = 10
 
 
@@ -32,16 +32,17 @@ class DecisionTree:
 
     def build_subtree(self, node, D):
         DL, DR = self.split_best(node, D)
+        print(node)
         if self.stopping_criterion(DL):
-            self.left = LeafNode(self.find_prediction(DL))
+            node.left = LeafNode(self.find_prediction(DL))
         else:
-            self.left = DecisionNode()
-            self.build_subtree(self.left, DL)
+            node.left = DecisionNode()
+            self.build_subtree(node.left, DL)
         if self.stopping_criterion(DR):
-            self.right = LeafNode(self.find_prediction(DR))
+            node.right = LeafNode(self.find_prediction(DR))
         else:
-            self.right = DecisionNode()
-            self.build_subtree(self.right, DR)
+            node.right = DecisionNode()
+            self.build_subtree(node.right, DR)
 
 
     def find_prediction(self, D):
@@ -61,6 +62,7 @@ class DecisionTree:
         var_split = D.shape[LENGTH] * D[self.target_name].var()
         var_split -= DL.shape[LENGTH] * DL[self.target_name].var()
         var_split -= DR.shape[LENGTH] * DR[self.target_name].var()
+        return var_split
 
 
     def update_best_dict(self, best, D, split_column, split_value):
@@ -75,7 +77,7 @@ class DecisionTree:
             var_split = self.compute_var(D, DL, DR)
             feature_type = FeatureType.CATEGORICAL
 
-        if best['var'] is None or best['var'] > var_split:
+        if best['var'] is None or best['var'] < var_split:
             best['var'] = var_split
             best['feature'] = split_column
             best['value'] = split_value
@@ -136,5 +138,4 @@ class DecisionTree:
         current_node = self.root
         while isinstance(current_node, DecisionNode):
             current_node = current_node.next(x)
-        print(current_node)
         return current_node.prediction_value

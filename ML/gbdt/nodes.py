@@ -52,13 +52,22 @@ class DecisionNode(Node):
             else:
                 return self.right
         if self.feature_type == FeatureType.CONTINUOUS:
-            print(self.feature)
-            print(x)
-            print(x[self.feature])
-            print(self.value)
+            #print(self.feature)
+            #print(x)
+            #print(x[self.feature])
+            #print(self.value)
             if x[self.feature] < self.value:
                 return self.left
             else:
                 return self.right
 
         raise Exception("No node returned")
+
+
+    def __str__(self):
+        return """
+            Feature {feature} splits on {value}
+        """.format(
+            feature=self.feature,
+            value=self.value,
+        )
