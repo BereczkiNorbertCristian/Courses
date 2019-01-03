@@ -66,6 +66,7 @@ class DecisionTree:
 
 
     def update_best_dict(self, best, D, split_column, split_value):
+        global LENGTH
         if D[split_column].dtype == np.float64:
             DL = D[D[split_column] < split_value]
             DR = D[D[split_column] >= split_value]
@@ -77,7 +78,8 @@ class DecisionTree:
             var_split = self.compute_var(D, DL, DR)
             feature_type = FeatureType.CATEGORICAL
 
-        if best['var'] is None or best['var'] < var_split:
+        if ((best['var'] is None or best['var'] < var_split) and
+                DL.shape[LENGTH] != 0 and DR.shape[LENGTH] != 0):
             best['var'] = var_split
             best['feature'] = split_column
             best['value'] = split_value
@@ -93,6 +95,7 @@ class DecisionTree:
             'feature': None,
             'value': None,
             'feature_type': None,
+            'idx': None,
         }
 
         for c in D.columns:
@@ -104,9 +107,9 @@ class DecisionTree:
                 # Treat as continuous feature
                 if D[c].shape[LENGTH] <= 11:
                     # We have a few number of examples
-                    sorted_df = D.sort_values(by=[c])
-                    for i in range(1,D[c].unique().shape[LENGTH]):
-                        split_value = D[c].iloc[i]
+                    unique_values = D[c].unique()
+                    for i in range(1,unique_values.shape[LENGTH]):
+                        split_value = unique_values[i]
                         best = self.update_best_dict(best, D, c, split_value)
                 else:
                     # Take only 9 splits based on quantiles because we have
