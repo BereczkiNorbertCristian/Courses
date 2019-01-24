@@ -16,11 +16,12 @@ LENGTH = 0
 class DecisionTree:
 
 
-    def __init__(self):
+    def __init__(self, ignore_columns):
         self.root = None
         self.target_name = None
         self.EPS = 0.01
         self.MIN_STOP_SIZE = 10
+        self.ignore_columns = ignore_columns
 
 
     # We will consider the target type as a float
@@ -60,8 +61,14 @@ class DecisionTree:
     def compute_var(self, D, DL, DR):
         global LENGTH
         var_split = D.shape[LENGTH] * D[self.target_name].var()
-        var_split -= DL.shape[LENGTH] * DL[self.target_name].var()
-        var_split -= DR.shape[LENGTH] * DR[self.target_name].var()
+        adder = DL.shape[LENGTH] * DL[self.target_name].var()
+        if np.isnan(adder):
+            adder = 0
+        var_split -= adder
+        adder = DR.shape[LENGTH] * DR[self.target_name].var()
+        if np.isnan(adder):
+            adder = 0
+        var_split -= adder
         return var_split
 
 
@@ -77,6 +84,7 @@ class DecisionTree:
             DR = D[D[split_column] != split_value]
             var_split = self.compute_var(D, DL, DR)
             feature_type = FeatureType.CATEGORICAL
+
 
         if ((best['var'] is None or best['var'] < var_split) and
                 DL.shape[LENGTH] != 0 and DR.shape[LENGTH] != 0):
@@ -101,6 +109,7 @@ class DecisionTree:
         for c in D.columns:
 
             if c == self.target_name: continue
+            if c in self.ignore_columns: continue
             if len(D[c].unique()) == 1: continue
 
             if D[c].dtype == np.float64:
