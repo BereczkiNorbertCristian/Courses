@@ -17,7 +17,7 @@ class GradientBoosting:
         df['predf'] = 0
         for _ in range(self.n_estimators):
 
-            dt = DecisionTree(ignore_columns=['pref',target])
+            dt = DecisionTree(ignore_columns=['predf',target])
             dt.build_tree(df,'yi')
 
             predi = pd.Series([
