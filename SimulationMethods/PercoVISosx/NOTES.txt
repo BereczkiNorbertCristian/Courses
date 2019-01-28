@@ -1,0 +1,22 @@
+/* PERCOVIS RELEASE NOTES */
+
+Hi, and thanks for downloading PercoVIS. You can read the version history below. Any comments and suggestions are welcome. Please contact me at 
+	daniel.larremore@colorado.edu 
+or visit my website
+	http://amath.colorado.edu/student/larremore/PercoVIS.html
+for more information or a user's guide.
+
+Sincerely,
+Dan Larremore
+
+PercoVIS is available for free under a Creative Commons NonCommercial-ShareAlike 3.0 License.
+
+You have downloaded version 1.2
+- Added Social Climber attachment
+
+Version 1.1
+- Added the Product Rule
+- Added the Show PR link checkbox
+
+Version 1.0
+- Release
