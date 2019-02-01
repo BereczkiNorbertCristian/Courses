@@ -128,7 +128,7 @@ printf("%d\n",N-1);
 }
 
 
-void calculate_degree_distribution()
+void calculate_degree_distribution(int opt)
 {
 int i,j;
 FILE *f;
@@ -142,17 +142,23 @@ for(i=0;i<N;i++)
             degree[i] += adjacency[i][j];
     }
 
-f = fopen("degree.txt","wt");
+if(opt == 1)
+    f = fopen("degree_erdos.txt","wt");
+else
+    f = fopen("degree_preference.txt","wt");
 for(i=0;i<N;i++)
     fprintf(f,"%d\n",degree[i]);
     
 fclose(f);
 }
 
-void write_graph_to_file(){
+void write_graph_to_file(int opt){
     
     FILE *f;
-    f = fopen("graph.out","w");
+    if(opt == 1)
+        f = fopen("graph_erdos.txt","w");
+    else
+        f = fopen("graph_preference.txt","w");
     for(int i=0;i<N;++i) {
         fprintf(f,"%d\n",i);
     }
@@ -170,11 +176,14 @@ void write_graph_to_file(){
 int main(int argc, const char * argv[])
 {
 
-initialize_adj(100);
-//create_scale_free_links(20);
-create_random_links(500);
-calculate_degree_distribution();
-write_graph_to_file();
+initialize_adj(10);
+create_scale_free_links(20);
+calculate_degree_distribution(2);
+write_graph_to_file(2);
+initialize_adj(10);
+create_random_links(20);
+calculate_degree_distribution(1);
+write_graph_to_file(1);
 
 return 0;
 }
