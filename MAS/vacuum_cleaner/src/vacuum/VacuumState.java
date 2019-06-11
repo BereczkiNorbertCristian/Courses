@@ -1,5 +1,7 @@
 package vacuum;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import static vacuum.Constants.*;
 
 public class VacuumState {
@@ -15,11 +17,30 @@ public class VacuumState {
             {CLEAN, CLEAN, DIRT, CLEAN}
     };
 
+    private ReentrantLock[][] locks = {
+            {new ReentrantLock(), new ReentrantLock(), new ReentrantLock(), new ReentrantLock()},
+            {new ReentrantLock(), new ReentrantLock(), new ReentrantLock(), new ReentrantLock()},
+            {new ReentrantLock(), new ReentrantLock(), new ReentrantLock(), new ReentrantLock()},
+            {new ReentrantLock(), new ReentrantLock(), new ReentrantLock(), new ReentrantLock()}
+    };
+
     public VacuumState() {
+    }
+
+    public void init_first_lock(int id) {
+        lock_cell(agents_row[id], agents_col[id]);
     }
 
     public int get_row(int id) {
         return agents_row[id];
+    }
+
+    public void lock_cell(int row, int col) {
+        locks[row][col].lock();
+    }
+
+    public void unlock_cell(int row, int col) {
+        locks[row][col].unlock();
     }
 
     public int get_col(int id) {

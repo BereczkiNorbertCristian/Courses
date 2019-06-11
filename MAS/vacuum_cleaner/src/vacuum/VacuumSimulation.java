@@ -1,43 +1,35 @@
 package vacuum;
 
 
-public class VacuumSimulation {
+public class VacuumSimulation extends Thread {
 
     private VacuumEnvironment env = null;
-    private VacuumAgent agent1 = null;
-    private VacuumAgent agent2 = null;
+    private VacuumAgent agent = null;
 
     public VacuumSimulation(
             VacuumEnvironment env,
-            VacuumAgent agent1,
-            VacuumAgent agent2
+            VacuumAgent agent
     ) {
         this.env = env;
-        this.agent1 = agent1;
-        this.agent2 = agent2;
+        this.agent = agent;
     }
 
     private boolean is_complete() {
         return env.is_done();
     }
 
-    public void do_agent(VacuumAgent agent) {
-
-        VacuumPercept p = env.get_percept(agent);
-        agent.see(p);
-        VacuumAction action = agent.select_action();
-        env.update_state(agent, action);
-        agent.reset_perception();
-    }
-
     public void run() {
         int it_no = 0;
         System.out.println("Dirts: " + env.get_dirts());
         env.show_state();
+        env.init_first_lock(agent.get_id());
         while(!is_complete()) {
 
-            do_agent(agent1);
-            do_agent(agent2);
+            VacuumPercept p = env.get_percept(agent);
+            agent.see(p);
+            VacuumAction action = agent.select_action();
+            env.update_state(agent, action);
+            agent.reset_perception();
 
             if(it_no % 100000000 == 0) {
                 System.out.println(it_no);

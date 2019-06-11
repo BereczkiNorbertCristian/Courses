@@ -12,8 +12,15 @@ public class ActionGoForward extends VacuumAction {
         int col = state.get_col(agent_id);
         int direction = state.get_direction(agent_id);
 
-        state.set_row(agent_id,row + drow[direction]);
-        state.set_col(agent_id,col + dcol[direction]);
+        int next_row = row + drow[direction];
+        int next_col = col + dcol[direction];
+
+        state.lock_cell(next_row, next_col);
+
+        state.set_row(agent_id, next_row);
+        state.set_col(agent_id, next_col);
+
+        state.unlock_cell(row, col);
 
         System.out.println("Agent: " + agent_id + " goes to: " + state.get_row(agent_id) + "," + state.get_col(agent_id));
 

@@ -12,7 +12,10 @@ public class Main {
         VacuumAgent agent1 = new VacuumAgent(0);
         VacuumAgent agent2 = new VacuumAgent(1);
 
-        VacuumSimulation simulation = new VacuumSimulation(environment, agent1, agent2);
-        simulation.run();
+        VacuumSimulation simulation_agent1 = new VacuumSimulation(environment, agent1);
+        VacuumSimulation simulation_agent2 = new VacuumSimulation(environment, agent2);
+
+        simulation_agent1.start();
+        simulation_agent2.start();
     }
 }

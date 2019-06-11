@@ -10,6 +10,10 @@ public class VacuumEnvironment {
         this.env_state = env_state;
     }
 
+    public void init_first_lock(int id) {
+        env_state.init_first_lock(id);
+    }
+
     public void update_state(VacuumAgent agent, VacuumAction action) {
         env_state = action.execute(agent, env_state);
     }
