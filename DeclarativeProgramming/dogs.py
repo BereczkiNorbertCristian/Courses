@@ -1,5 +1,26 @@
 from itertools import permutations
 
+"""
+
+PROBLEM: The Dogs
+
+Mr. Adams, Mrs. Barber, Mr. Cox, Miss Duke, and Miss Evans
+live in a row of houses in the same block. Each owns a dog. The
+dogs they own are a beagle, a collie, a dachshund, a poodle,
+and a retriever.
+
+    - Mr. Cox and Miss Duke live at the ends of the row of houses.
+    - A woman owns the retriever.
+    - The collie lives in the middle house.
+    - Miss Duke does not own the poodle.
+    - The dachshund was a gift from the owner's husband.
+    - The retriever lives between the collie and the beagle.
+
+Which breed of dog does each person own? 
+
+"""
+
+
 people = ["Mr. Adams", "Mrs. Barber", "Mr. Cox", "Miss Duke", "Miss Evans"]
 dogs = ["beagle", "collie", "dachshund", "poodle", "retriever"]
 
