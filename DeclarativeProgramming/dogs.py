@@ -16,7 +16,7 @@ and a retriever.
     - The dachshund was a gift from the owner's husband.
     - The retriever lives between the collie and the beagle.
 
-Which breed of dog does each person own? 
+Which breed of dog does each person own?
 
 """
 
@@ -26,6 +26,10 @@ dogs = ["beagle", "collie", "dachshund", "poodle", "retriever"]
 
 # ------------------- RESTRICTION FUNCTIONS ------------------
 
+# p_perm stands for people_permutation
+# d_perm stands for dog_permutation
+
+# function that checks if a woman owns a dog: dog
 def is_owner_woman(dog, p_perm, d_perm):
     prefixes = ["Mrs.", "Miss"]
     p_idx = d_perm.index(dog)
@@ -34,23 +38,29 @@ def is_owner_woman(dog, p_perm, d_perm):
             return True
     return False
 
+# Mr. Cox and Miss Duke live at the ends of the row of houses.
 def restriction1(p_perm, d_perm):
     for i in [0, 4]:
         if p_perm[i] not in ["Mr. Cox", "Miss Duke"]: return False
     return True
 
+# A woman owns the retriever.
 def restriction2(p_perm, d_perm):
     return is_owner_woman("retriever", p_perm, d_perm)
 
+# The collie lives in the middle house.
 def restriction3(p_perm, d_perm):
     return 2 == d_perm.index("collie")
 
+# Miss Duke does not own the poodle.
 def restriction4(p_perm, d_perm):
     return p_perm.index("Miss Duke") != d_perm.index("poodle")
 
+# The dachshund was a gift from the owner's husband.
 def restriction5(p_perm, d_perm):
     return is_owner_woman("dachshund", p_perm, d_perm)
 
+# The retriever lives between the collie and the beagle.
 def restriction6(p_perm, d_perm):
     restriction_dogs_subset = ["collie", "beagle"]
     retriever_idx = d_perm.index("retriever")
@@ -66,17 +76,18 @@ RESTRICTIONS = [
         restriction2,
         restriction3,
         restriction4,
-        restriction5, 
+        restriction5,
         restriction6,
 ]
 
+# function that checks if the solution given by people_perm and dogs_perm is satisfied
 def check_solution(people_perm, dogs_perm):
     global RESTRICTIONS
     for restriction in RESTRICTIONS:
         if not restriction(people_perm, dogs_perm): return False
     return True
 
-found = False 
+found = False
 
 for people_perm in permutations(people):
     if found: break
@@ -89,6 +100,3 @@ for people_perm in permutations(people):
 
 if found: print("Solution was found!")
 else: print("No solution was found!")
-
-
-
