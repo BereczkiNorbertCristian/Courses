@@ -1,4 +1,5 @@
 from itertools import permutations
+from copy import deepcopy
 
 """
 
@@ -89,14 +90,23 @@ def check_solution(people_perm, dogs_perm):
 
 found = False
 
+sols = 0
+sols_l = []
+
 for people_perm in permutations(people):
-    if found: break
+    
     for dogs_perm in permutations(dogs):
-        if found: break
+        
         if check_solution(people_perm, dogs_perm):
+            sols += 1
+            sols_l.append(list(zip(people_perm, dogs_perm)))
+
+            if found: continue
             print(people_perm)
             print(dogs_perm)
             found = True
 
 if found: print("Solution was found!")
 else: print("No solution was found!")
+print(f"Number of solutions: {sols}")
+print(sols_l)
